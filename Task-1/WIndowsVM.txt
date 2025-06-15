@@ -1,0 +1,265 @@
+VM Is Created
+4.247.157.93  IP for the vm
+********************************************************************************
+
+
+Requesting a Cloud Shell.Succeeded. 
+Connecting terminal...
+
+Welcome to Azure Cloud Shell
+
+Type "az" to use Azure CLI
+Type "help" to learn about Cloud Shell
+
+azureuser [ ~ ]$ export RANDOM_ID=$(openssl rand -hex 3)
+export REGION="CentralIndia"
+export WIN_RESOURCE_GROUP="DemoWinRsGr$RANDOM_ID"
+export WIN_VM_NAME="DemoVM$RANDOM_ID"
+export WIN_USERNAME="captain"
+export WIN_PASSWORD="NewPass#999#"
+export WIN_IMAGE="Win2022Datacenter"
+
+azureuser [ ~ ]$ az group create \
+  --name $WIN_RESOURCE_GROUP \
+  --location $REGION
+
+{
+  "id": "/subscriptions/979e0273-76c3-45ef-8f3a-392e1b66d40d/resourceGroups/DemoWinRsGrca097d",
+  "location": "centralindia",
+  "managedBy": null,
+  "name": "DemoWinRsGrca097d",
+  "properties": {
+    "provisioningState": "Succeeded"
+  },
+  "tags": null,
+  "type": "Microsoft.Resources/resourceGroups"
+}
+
+
+
+azureuser [ ~ ]$ az vm create \
+  --resource-group $WIN_RESOURCE_GROUP \
+  --name $WIN_VM_NAME \
+  --image $WIN_IMAGE \
+  --admin-username $WIN_USERNAME \
+  --admin-password $WIN_PASSWORD \
+  --size Standard_B2s \
+  --public-ip-sku Standard
+
+{
+  "fqdns": "",
+  "id": "/subscriptions/979e0273-76c3-45ef-8f3a-392e1b66d40d/resourceGroups/DemoWinRsGrca097d/providers/Microsoft.Compute/virtualMachines/DemoVMca097d",
+  "location": "centralindia",
+  "macAddress": "00-0D-3A-3D-EC-83",
+  "powerState": "VM running",
+  "privateIpAddress": "10.0.0.4",
+  "publicIpAddress": "4.247.157.93",
+  "resourceGroup": "DemoWinRsGrca097d",
+  "zones": ""
+}
+
+
+
+azureuser [ ~ ]$ az vm list-ip-addresses \
+  --resource-group $WIN_RESOURCE_GROUP \
+  --name $WIN_VM_NAME \
+  --query "[].virtualMachine.network.publicIpAddresses[0].ipAddress" \
+  -o tsv
+
+4.247.157.93
+
+
+
+azureuser [ ~ ]$ az vm open-port \
+  --port 3389 \
+  --resource-group $WIN_RESOURCE_GROUP \
+  --name $WIN_VM_NAME
+
+{
+  "defaultSecurityRules": [
+    {
+      "access": "Allow",
+      "description": "Allow inbound traffic from all VMs in VNET",
+      "destinationAddressPrefix": "VirtualNetwork",
+      "destinationAddressPrefixes": [],
+      "destinationPortRange": "*",
+      "destinationPortRanges": [],
+      "direction": "Inbound",
+      "etag": "W/\"21d44fdc-e1cf-4acb-83a7-8ea986650334\"",
+      "id": "/subscriptions/979e0273-76c3-45ef-8f3a-392e1b66d40d/resourceGroups/DemoWinRsGrca097d/providers/Microsoft.Network/networkSecurityGroups/DemoVMca097dNSG/defaultSecurityRules/AllowVnetInBound",
+      "name": "AllowVnetInBound",
+      "priority": 65000,
+      "protocol": "*",
+      "provisioningState": "Succeeded",
+      "resourceGroup": "DemoWinRsGrca097d",
+      "sourceAddressPrefix": "VirtualNetwork",
+      "sourceAddressPrefixes": [],
+      "sourcePortRange": "*",
+      "sourcePortRanges": [],
+      "type": "Microsoft.Network/networkSecurityGroups/defaultSecurityRules"
+    },
+    {
+      "access": "Allow",
+      "description": "Allow inbound traffic from azure load balancer",
+      "destinationAddressPrefix": "*",
+      "destinationAddressPrefixes": [],
+      "destinationPortRange": "*",
+      "destinationPortRanges": [],
+      "direction": "Inbound",
+      "etag": "W/\"21d44fdc-e1cf-4acb-83a7-8ea986650334\"",
+      "id": "/subscriptions/979e0273-76c3-45ef-8f3a-392e1b66d40d/resourceGroups/DemoWinRsGrca097d/providers/Microsoft.Network/networkSecurityGroups/DemoVMca097dNSG/defaultSecurityRules/AllowAzureLoadBalancerInBound",
+      "name": "AllowAzureLoadBalancerInBound",
+      "priority": 65001,
+      "protocol": "*",
+      "provisioningState": "Succeeded",
+      "resourceGroup": "DemoWinRsGrca097d",
+      "sourceAddressPrefix": "AzureLoadBalancer",
+      "sourceAddressPrefixes": [],
+      "sourcePortRange": "*",
+      "sourcePortRanges": [],
+      "type": "Microsoft.Network/networkSecurityGroups/defaultSecurityRules"
+    },
+    {
+      "access": "Deny",
+      "description": "Deny all inbound traffic",
+      "destinationAddressPrefix": "*",
+      "destinationAddressPrefixes": [],
+      "destinationPortRange": "*",
+      "destinationPortRanges": [],
+      "direction": "Inbound",
+      "etag": "W/\"21d44fdc-e1cf-4acb-83a7-8ea986650334\"",
+      "id": "/subscriptions/979e0273-76c3-45ef-8f3a-392e1b66d40d/resourceGroups/DemoWinRsGrca097d/providers/Microsoft.Network/networkSecurityGroups/DemoVMca097dNSG/defaultSecurityRules/DenyAllInBound",
+      "name": "DenyAllInBound",
+      "priority": 65500,
+      "protocol": "*",
+      "provisioningState": "Succeeded",
+      "resourceGroup": "DemoWinRsGrca097d",
+      "sourceAddressPrefix": "*",
+      "sourceAddressPrefixes": [],
+      "sourcePortRange": "*",
+      "sourcePortRanges": [],
+      "type": "Microsoft.Network/networkSecurityGroups/defaultSecurityRules"
+    },
+    {
+      "access": "Allow",
+      "description": "Allow outbound traffic from all VMs to all VMs in VNET",
+      "destinationAddressPrefix": "VirtualNetwork",
+      "destinationAddressPrefixes": [],
+      "destinationPortRange": "*",
+      "destinationPortRanges": [],
+      "direction": "Outbound",
+      "etag": "W/\"21d44fdc-e1cf-4acb-83a7-8ea986650334\"",
+      "id": "/subscriptions/979e0273-76c3-45ef-8f3a-392e1b66d40d/resourceGroups/DemoWinRsGrca097d/providers/Microsoft.Network/networkSecurityGroups/DemoVMca097dNSG/defaultSecurityRules/AllowVnetOutBound",
+      "name": "AllowVnetOutBound",
+      "priority": 65000,
+      "protocol": "*",
+      "provisioningState": "Succeeded",
+      "resourceGroup": "DemoWinRsGrca097d",
+      "sourceAddressPrefix": "VirtualNetwork",
+      "sourceAddressPrefixes": [],
+      "sourcePortRange": "*",
+      "sourcePortRanges": [],
+      "type": "Microsoft.Network/networkSecurityGroups/defaultSecurityRules"
+    },
+    {
+      "access": "Allow",
+      "description": "Allow outbound traffic from all VMs to Internet",
+      "destinationAddressPrefix": "Internet",
+      "destinationAddressPrefixes": [],
+      "destinationPortRange": "*",
+      "destinationPortRanges": [],
+      "direction": "Outbound",
+      "etag": "W/\"21d44fdc-e1cf-4acb-83a7-8ea986650334\"",
+      "id": "/subscriptions/979e0273-76c3-45ef-8f3a-392e1b66d40d/resourceGroups/DemoWinRsGrca097d/providers/Microsoft.Network/networkSecurityGroups/DemoVMca097dNSG/defaultSecurityRules/AllowInternetOutBound",
+      "name": "AllowInternetOutBound",
+      "priority": 65001,
+      "protocol": "*",
+      "provisioningState": "Succeeded",
+      "resourceGroup": "DemoWinRsGrca097d",
+      "sourceAddressPrefix": "*",
+      "sourceAddressPrefixes": [],
+      "sourcePortRange": "*",
+      "sourcePortRanges": [],
+      "type": "Microsoft.Network/networkSecurityGroups/defaultSecurityRules"
+    },
+    {
+      "access": "Deny",
+      "description": "Deny all outbound traffic",
+      "destinationAddressPrefix": "*",
+      "destinationAddressPrefixes": [],
+      "destinationPortRange": "*",
+      "destinationPortRanges": [],
+      "direction": "Outbound",
+      "etag": "W/\"21d44fdc-e1cf-4acb-83a7-8ea986650334\"",
+      "id": "/subscriptions/979e0273-76c3-45ef-8f3a-392e1b66d40d/resourceGroups/DemoWinRsGrca097d/providers/Microsoft.Network/networkSecurityGroups/DemoVMca097dNSG/defaultSecurityRules/DenyAllOutBound",
+      "name": "DenyAllOutBound",
+      "priority": 65500,
+      "protocol": "*",
+      "provisioningState": "Succeeded",
+      "resourceGroup": "DemoWinRsGrca097d",
+      "sourceAddressPrefix": "*",
+      "sourceAddressPrefixes": [],
+      "sourcePortRange": "*",
+      "sourcePortRanges": [],
+      "type": "Microsoft.Network/networkSecurityGroups/defaultSecurityRules"
+    }
+  ],
+  "etag": "W/\"21d44fdc-e1cf-4acb-83a7-8ea986650334\"",
+  "id": "/subscriptions/979e0273-76c3-45ef-8f3a-392e1b66d40d/resourceGroups/DemoWinRsGrca097d/providers/Microsoft.Network/networkSecurityGroups/DemoVMca097dNSG",
+  "location": "centralindia",
+  "name": "DemoVMca097dNSG",
+  "networkInterfaces": [
+    {
+      "id": "/subscriptions/979e0273-76c3-45ef-8f3a-392e1b66d40d/resourceGroups/DemoWinRsGrca097d/providers/Microsoft.Network/networkInterfaces/DemoVMca097dVMNic",
+      "resourceGroup": "DemoWinRsGrca097d"
+    }
+  ],
+  "provisioningState": "Succeeded",
+  "resourceGroup": "DemoWinRsGrca097d",
+  "resourceGuid": "237083d3-96dc-4010-9caf-4ecb1769d01b",
+  "securityRules": [
+    {
+      "access": "Allow",
+      "destinationAddressPrefix": "*",
+      "destinationAddressPrefixes": [],
+      "destinationPortRange": "3389",
+      "destinationPortRanges": [],
+      "direction": "Inbound",
+      "etag": "W/\"21d44fdc-e1cf-4acb-83a7-8ea986650334\"",
+      "id": "/subscriptions/979e0273-76c3-45ef-8f3a-392e1b66d40d/resourceGroups/DemoWinRsGrca097d/providers/Microsoft.Network/networkSecurityGroups/DemoVMca097dNSG/securityRules/rdp",
+      "name": "rdp",
+      "priority": 1000,
+      "protocol": "Tcp",
+      "provisioningState": "Succeeded",
+      "resourceGroup": "DemoWinRsGrca097d",
+      "sourceAddressPrefix": "*",
+      "sourceAddressPrefixes": [],
+      "sourcePortRange": "*",
+      "sourcePortRanges": [],
+      "type": "Microsoft.Network/networkSecurityGroups/securityRules"
+    },
+    {
+      "access": "Allow",
+      "destinationAddressPrefix": "*",
+      "destinationAddressPrefixes": [],
+      "destinationPortRange": "3389",
+      "destinationPortRanges": [],
+      "direction": "Inbound",
+      "etag": "W/\"21d44fdc-e1cf-4acb-83a7-8ea986650334\"",
+      "id": "/subscriptions/979e0273-76c3-45ef-8f3a-392e1b66d40d/resourceGroups/DemoWinRsGrca097d/providers/Microsoft.Network/networkSecurityGroups/DemoVMca097dNSG/securityRules/open-port-3389",
+      "name": "open-port-3389",
+      "priority": 900,
+      "protocol": "*",
+      "provisioningState": "Succeeded",
+      "resourceGroup": "DemoWinRsGrca097d",
+      "sourceAddressPrefix": "*",
+      "sourceAddressPrefixes": [],
+      "sourcePortRange": "*",
+      "sourcePortRanges": [],
+      "type": "Microsoft.Network/networkSecurityGroups/securityRules"
+    }
+  ],
+  "tags": {},
+  "type": "Microsoft.Network/networkSecurityGroups"
+}
+azureuser [ ~ ]$ 
