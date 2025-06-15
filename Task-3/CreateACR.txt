@@ -1,0 +1,78 @@
+//Creating the ACR Azure Container Registry
+
+Requesting a Cloud Shell.Succeeded. 
+Connecting terminal...
+
+azureuser [ ~ ]$ az acr create --resource-group CapsResourceGroup \
+  --name w2containerregistry \
+azureuser [ ~ ]$ az acr create --resource-group CapsResourceGroup \
+azureuser [ ~ ]$ az acr create --resource-group CapsResourceGroup \
+  --name w2containerregistry \
+  --sku Basic \
+  --admin-enabled true
+Resource provider 'Microsoft.ContainerRegistry' used by this operation is not registered. We are registering for you.
+Registration succeeded.
+{
+  "adminUserEnabled": true,
+  "anonymousPullEnabled": false,
+  "creationDate": "2025-06-15T12:27:17.765101+00:00",
+  "dataEndpointEnabled": false,
+  "dataEndpointHostNames": [],
+  "encryption": {
+    "keyVaultProperties": null,
+    "status": "disabled"
+  },
+  "id": "/subscriptions/979***************************0d/resourceGroups/CapsResourceGroup/providers/Microsoft.ContainerRegistry/registries/w2containerregistry",
+  "identity": null,
+  "location": "centralindia",
+  "loginServer": "w2containerregistry.azurecr.io",
+  "metadataSearch": "Disabled",
+  "name": "w2containerregistry",
+  "networkRuleBypassOptions": "AzureServices",
+  "networkRuleSet": null,
+  "policies": {
+    "azureAdAuthenticationAsArmPolicy": {
+      "status": "enabled"
+    },
+    "exportPolicy": {
+      "status": "enabled"
+    },
+    "quarantinePolicy": {
+      "status": "disabled"
+    },
+    "retentionPolicy": {
+      "days": 7,
+      "lastUpdatedTime": "2025-06-15T12:27:31.812583+00:00",
+      "status": "disabled"
+    },
+    "softDeletePolicy": {
+      "lastUpdatedTime": "2025-06-15T12:27:31.812642+00:00",
+      "retentionDays": 7,
+      "status": "disabled"
+    },
+    "trustPolicy": {
+      "status": "disabled",
+      "type": "Notary"
+    }
+  },
+  "privateEndpointConnections": [],
+  "provisioningState": "Succeeded",
+  "publicNetworkAccess": "Enabled",
+  "resourceGroup": "CapsResourceGroup",
+  "sku": {
+    "name": "Basic",
+    "tier": "Basic"
+  },
+  "status": null,
+  "systemData": {
+    "createdAt": "2025-06-15T12:27:17.765101+00:00",
+    "createdBy": "22******@rcpit.ac.in",
+    "createdByType": "User",
+    "lastModifiedAt": "2025-06-15T12:27:17.765101+00:00",
+    "lastModifiedBy": "22*******@rcpit.ac.in",
+    "lastModifiedByType": "User"
+  },
+  "tags": {},
+  "type": "Microsoft.ContainerRegistry/registries",
+  "zoneRedundancy": "Disabled"
+}
